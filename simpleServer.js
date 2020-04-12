@@ -5,13 +5,13 @@ const bodyParser = require('body-parser')
 /* Middleware*/
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-const cors = require('cors');
+const cors = require('cors')
 app.use(cors());
 
 /* Initialize the main project folder*/
 app.use(express.static('website'));
 
-const port = 3000;
+const port = 80;
 /* Spin up the server*/
 const server = app.listen(port, listening);
  function listening(){
@@ -33,18 +33,10 @@ function getFakeData(req,res) {
 }
 
 
-// respond with animal Data when a GET request is made to the homepage
-
 const animalData = [];
 
-app.get('/all', getData)
-
-function getData(req,res){
-  res.send(animalData)
-}
-
 // POST Route to add a new animal
-app.post('/addAnimal', addAnimal);
+app.post('/addAnimal', cors(), addAnimal);
 
 function addAnimal(req,res){
   newEntry = {
@@ -53,6 +45,12 @@ function addAnimal(req,res){
     fav: req.body.favo
   }
   animalData.push(newEntry)
-  console.log("These are all animals:")
-  console.log(animalData)
+  res.send(animalData)
+}
+
+// Respond with animal Data when a GET request is made to the homepage
+app.get('/all', getData)
+
+function getData(req,res){
+  res.send(animalData)
 }
